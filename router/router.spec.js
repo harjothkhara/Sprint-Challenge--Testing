@@ -20,4 +20,38 @@ describe('server.js', () => {
             expect(Array.isArray(response.body)).toBeTruthy();
         });
     })
+    describe("POST /games", async() => {
+        it('should return status code 201 if successful', async () => {
+            const response = await request(server).post('/api/games').send({
+                title: 'Pacman',
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            expect(response.status).toBe(201);
+        })
+        it('should return json if successful', async () => {
+            const response = await request(server).post('/api/games').send({
+                title: 'Pacman',
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            expect(response.type).toBe('application/json');
+        })
+        it('should return created object if successful', async () => {
+            const response = await request(server).post('/api/games').send({
+                title: 'Pacman',
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            expect(typeof response).toBe("Object");
+            expect(response.title).toBe("Pacman")
+        })
+        it('should fail with status code 422 if information is incomplete', async () => {
+            const response = await request(server).post('/api/games').send({
+                genre: 'Arcade',
+                releaseYear: 1980
+            });
+            expect(response.status).toBe(422)
+        })
+    })
 });
