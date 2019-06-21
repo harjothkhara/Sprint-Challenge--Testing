@@ -104,4 +104,43 @@ describe('server.js', () => {
              expect(response2.status).toBe(405);  
         });
     });
+    describe('DEL /games/:id', () => {
+        it('should return a status code 200 ok', async () => {
+            await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                });
+             const response = await request(server).delete('/api/games/1');
+             expect(response.status).toBe(200)   
+        });
+        it('should return json', async () => {
+            await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                });
+            const response = await request(server).get('/api/games/1')
+            expect(response.type).toBe('application/json');
+        });
+        it('it should return deleted object', async () => {
+            await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980    
+                });
+            const response = await request(server).delete('/api/games/1');
+            expect(response.body.title).toBe('Pacman');
+        });
+        it('should return status code 404 if object does not exist', async () => {
+            const response = await request(server).delete('/api/games/10');
+            expect(response.status).toBe(404);
+        });
+    });
 });
