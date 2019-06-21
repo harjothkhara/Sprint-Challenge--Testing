@@ -14,7 +14,7 @@ async function find() {
 }
 
 async function findById(id) {
-    const games = await db("games")
+    const game = await db("games")
         .where({ id })
         .first();
     return game;

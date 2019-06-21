@@ -49,8 +49,8 @@ describe('server.js', () => {
                 genre: 'Arcade',
                 releaseYear: 1980
             });
-            expect(typeof response).toBe("Object");
-            expect(response.title).toBe("Pacman")
+            expect(typeof response).toBe('object');
+            expect(response.body.title).toBe('Pacman')
         });
         it('should fail with status code 422 if information is incomplete', async () => {
             const response = await request(server)
