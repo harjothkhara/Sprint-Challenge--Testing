@@ -61,5 +61,22 @@ describe('server.js', () => {
             });
             expect(response.status).toBe(422)
         });
+        it('should fail with status code 405 if title is not unique', async () => {
+            const response = await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                });
+            const response2 = await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                });
+             expect(response2.status).toBe(405);  
+        });
     });
 });

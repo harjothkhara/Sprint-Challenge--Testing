@@ -24,7 +24,9 @@ router.post('/', async (req, res) => {
                 res.status(201).json(newGame);
             }
         } catch (error) {
-            res.status(500).json({ message: `Your game could not be posted ${error}.` });
+            res.status(405).json({
+                message: `Your game could not be used because the title is not unique ${error}.`
+            });
         }
     }
 });
