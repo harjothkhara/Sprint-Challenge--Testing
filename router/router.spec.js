@@ -20,6 +20,31 @@ describe('server.js', () => {
             expect(Array.isArray(response.body)).toBeTruthy();
         });
     });
+    describe('GET /games/:id', () => {
+        it('should return status code 200 ok', async () => {
+            const response = await request(server).get('/api/games');
+            expect(response.status).toBe(200);
+        });
+        it('should return json', async () => {
+            const response = await request(server).get('/api/games');
+            expect(response.type).toBe('application/json');
+        });
+        it('should return requested object', async () => {
+            await request(server)
+                .post('/api/games')
+                .send({
+                    title: 'Pacman',
+                    genre: 'Arcade',
+                    releaseYear: 1980
+                });
+            const response = await request(server).get('/api/games/1');
+            expect(response.body.title).toBe('Pacman');
+        });
+        it('should return a status code 404 if object does not exist', async () => {
+            const response = await request(server).get('/api/games/10');
+            expect(response.status).toBe(404);
+        });
+    });
     describe("POST /games", () => {
         it('should return status code 201 if successful', async () => {
             const response = await request(server)
